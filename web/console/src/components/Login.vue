@@ -19,16 +19,22 @@
       <el-col :span="12">
         <div>
           <el-row>
-            <el-radio-group style="float:right;" v-model="librarySelection">
-              <el-radio label="ancient">古典</el-radio>
-              <el-radio label="recent">近代</el-radio>
-            </el-radio-group>
+            <el-col :offset="9" :span="18">
+              <el-radio-group v-model="librarySelection">
+                <el-radio label="ancient">古典</el-radio>
+                <el-radio label="recent">近代</el-radio>
+              </el-radio-group>
+            </el-col>
           </el-row>
           <el-row>
-            <el-input v-model="userName" placeholder="用户名" />
+            <el-col :offset="3" :span="18">
+              <el-input v-model="userName" placeholder="用户名" />
+            </el-col>
           </el-row>
           <el-row>
-            <el-input v-model="password" placeholder="密码" />
+            <el-col :offset="3" :span="18">
+              <el-input v-model="password" placeholder="密码" />
+            </el-col>
           </el-row>
           <el-row>
             <el-button @click="login()">登录</el-button>

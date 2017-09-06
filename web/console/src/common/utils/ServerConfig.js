@@ -17,7 +17,7 @@ let serverConfig = {
     firebase_function_config: {
       server_address: 'https://us-central1-firebase-wasabi2015.cloudfunctions.net'
     },
-    firebase_admin_user_id: 5733764789436416
+    firebase_admin_user_id: 100
   },
   production_config: {
     name: 'production',
@@ -33,7 +33,7 @@ let serverConfig = {
     firebase_function_config: {
       server_address: 'https://us-central1-ctalias2015.cloudfunctions.net'
     },
-    firebase_admin_user_id: 5733764789436416
+    firebase_admin_user_id: 100
   }
 }
 
