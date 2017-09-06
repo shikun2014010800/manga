@@ -6,9 +6,11 @@ import App from './App.vue'
 import Icon from 'vue-awesome/components/Icon.vue'
 import 'vue-awesome/icons'
 import router from './router'
+import ServerConfig from './common/utils/ServerConfig'
 
 Vue.use(ElementUI)
 Vue.component('icon', Icon)
+ServerConfig.loadServerConfig()
 
 new Vue({ // eslint-disable-line
   el: '#app',

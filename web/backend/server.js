@@ -7,72 +7,91 @@ const server = new Hapi.Server()
 const Vision = require('vision')
 const HapiSwagger = require('hapi-swagger')
 
-server.connection({ port: 3000, host: 'localhost' });
-
-server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (request, reply) {
-        reply('Hello, world!');
-    }
-})
-
-server.route({
-    method: 'GET',
-    path: '/{name}',
-    handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
-    }
-})
-
-server.route({
-    method: 'GET',
-    path: '/swagger/{param*}',
-    handler: {
-        directory: {
-            path: './public/',
-            redirectToSlash: true,
-            index: true
-        }
-    }
-})
+server.connection({ port: 3000, host: 'localhost' })
 const SwaggerOptions = {
-    info: {
-        'title': 'Test API Documentation',
-        'version': '0.0.1'
-    }
+  info: {
+    'title': 'Test API Documentation',
+    'version': '0.0.1'
+  }
 }
 
 server.register(Inert, () => {})
 server.register(Vision, () => {})
 server.register({
-    register: HapiSwagger,
-    options: SwaggerOptions
+  register: HapiSwagger,
+  options: SwaggerOptions
 })
 server.register({
-    register: Good,
-    options: {
-        reporters: {
-            console: [{
-                module: 'good-squeeze',
-                name: 'Squeeze',
-                args: [{
-                    response: '*',
-                    log: '*'
-                }]
-            }, {
-                module: 'good-console'
-            }, 'stdout']
-        }
+  register: require('hapi-cors'),
+  options: {
+    origins: ['http://localhost:8080', 'http://localhost:8081']
+  }
+})
+
+server.route({
+  method: 'GET',
+  path: '/',
+  handler: function (request, reply) {
+    reply('Hello, world!');
+  }
+})
+
+server.route({
+  method: 'GET',
+  path: '/{name}',
+  handler: function (request, reply) {
+      reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
+  }
+})
+
+server.route({
+  method: 'GET',
+  path: '/swagger/{param*}',
+  handler: {
+    directory: {
+      path: './public/',
+      redirectToSlash: true,
+      index: true
     }
+  }
+})
+
+server.route({
+  method: 'GET',
+  path: '/public/{param*}',
+  handler: {
+    directory: {
+      path: './public/assets',
+      redirectToSlash: true,
+      index: true
+    }
+  }
+})
+
+server.register({
+  register: Good,
+  options: {
+    reporters: {
+      console: [{
+        module: 'good-squeeze',
+        name: 'Squeeze',
+        args: [{
+            response: '*',
+            log: '*'
+        }]
+      }, {
+        module: 'good-console'
+      }, 'stdout']
+    }
+  }
 }, (err) => {
+  if (err) {
+    throw err
+  }
+  server.start((err) => {
     if (err) {
         throw err
     }
-    server.start((err) => {
-        if (err) {
-            throw err
-        }
-        server.log('info', 'Server running at: ' + server.info.uri)
-    })
+    server.log('info', 'Server running at: ' + server.info.uri)
+  })
 })
