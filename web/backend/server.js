@@ -75,11 +75,12 @@ server.route({
 
 server.route({
   method: 'GET',
-  path: '/texts/{mangaId}',
+  path: '/texts/guwenyuan/{id}',
   handler: async function (req, reply) {
-    const mangaId = req.params.mangaId
-    if (mangaId === '5bKz6Ziz5qW86K6w') {
-      const text = await readFile(path.join(__dirname, './public/texts/yueyanglouji.txt'), 'utf-8')
+    const mangaId = parseInt(req.params.id)
+    console.log('manga id = ' + mangaId)
+    if (mangaId >= 0 && mangaId <= 9) {
+      const text = await readFile(path.join(__dirname, `./public/assets/texts/guwenyuan${mangaId}.txt`), 'utf-8')
       reply(text)
     } else {
       reply(Boom.badRequest('invalid query'))
@@ -88,11 +89,11 @@ server.route({
 })
 server.route({
   method: 'GET',
-  path: '/pictures/{mangaId}',
+  path: '/pictures/guwenyuan/{id}',
   handler: function (req, reply) {
-    const mangaId = req.params.mangaId
-    if (mangaId === '5bKz6Ziz5qW86K6w') {
-      reply('public/img/yueyanglouji.png')
+    const mangaId = parseInt(req.params.id)
+    if (mangaId >= 0 && mangaId <= 9) {
+      reply(`public/img/guwenyuan${mangaId}.png`)
     } else {
       reply(Boom.badRequest('invalid query'))
     }

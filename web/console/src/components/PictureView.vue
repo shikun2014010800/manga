@@ -24,10 +24,10 @@ export default {
   },
   mounted() {
     let self = this
-    Axio.get(`pictures/${this.id}`)
+    Axio.get(`pictures/guwenyuan/${self.id}`)
     .then(function (response) {
       if (response.status === 200) {
-        this.path = response.data
+        self.path = response.data
       }
     })
     .catch(function (err) {

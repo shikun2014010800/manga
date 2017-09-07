@@ -1,10 +1,14 @@
 <template>
   <div>
     <div>
-      <img v-bind:src="headImage"/>
+      <el-row>
+        <el-col :offset="3">
+          <img v-bind:src="headImage"/>
+        </el-col>
+      </el-row>
     </div>
     <el-row>
-      <el-col :span="12">
+      <el-col :offset="3" :span="8">
         <div>
           <el-card>
             <p>提示</p>
@@ -16,45 +20,53 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="8">
+        <el-card>
+          <div>
+            <el-row>
+              <el-col :offset="9" :span="18">
+                <el-radio-group v-model="librarySelection">
+                  <el-radio label="ancient">古典</el-radio>
+                  <el-radio label="recent">近代</el-radio>
+                </el-radio-group>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :offset="3" :span="18">
+                <el-input v-model="userName" placeholder="用户名" />
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :offset="3" :span="18">
+                <el-input v-model="password" placeholder="密码" />
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :offset="6" :span="18">
+                <el-button @click="login()">登录</el-button>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="3">
+                <el-checkbox v-model="shouldSave">保存?</el-checkbox>
+              </el-col>
+              <el-col :span="6">
+                <template v-if="!ipAvailable">
+                  您的IP {{ myIP }} 未被授权!
+                </template>
+              </el-col>
+            </el-row>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :offset="10">
         <div>
-          <el-row>
-            <el-col :offset="9" :span="18">
-              <el-radio-group v-model="librarySelection">
-                <el-radio label="ancient">古典</el-radio>
-                <el-radio label="recent">近代</el-radio>
-              </el-radio-group>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :offset="3" :span="18">
-              <el-input v-model="userName" placeholder="用户名" />
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :offset="3" :span="18">
-              <el-input v-model="password" placeholder="密码" />
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-button @click="login()">登录</el-button>
-          </el-row>
-          <el-row>
-            <el-col :span="3">
-              <el-checkbox v-model="shouldSave">保存?</el-checkbox>
-            </el-col>
-            <el-col :span="6">
-              <template v-if="!ipAvailable">
-                您的IP {{ myIP }} 未被授权!
-              </template>
-            </el-col>
-          </el-row>
+          <p>版權所有 Copyright © 2017</p>
         </div>
       </el-col>
     </el-row>
-    <div style="float:center;">
-      <p>版權所有 Copyright © 2017</p>
-    </div>
   </div>
 </template>
 <script>
