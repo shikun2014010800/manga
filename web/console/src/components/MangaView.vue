@@ -9,23 +9,20 @@
         </el-menu>
       </el-col>
       <el-col :span="10">
-        <PictureView v-bind:id="page" />
+        <PictureView :id="page" />
       </el-col>
       <el-col :span="10">
-        <TranslationView v-bind:id="page" />
+        <TranslationView :id="page" />
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import PictureView from '@/cmoponents/PictureView'
+import PictureView from '@/components/PictureView'
 import TranslationView from '@/components/TranslationView'
 export default {
   name: 'manga_view',
-  props: {
-    mangaId: { type: String, required: true}
-  },
   components: {
     PictureView,
     TranslationView
@@ -37,7 +34,10 @@ export default {
   },
   methods: {
     handleSelect(index) {
-      this.page = index
+      const indexWithoutQuote = index.replace('\'', '')
+      console.log('handle index' + indexWithoutQuote)
+      this.page = parseInt(indexWithoutQuote)
+      console.log(`this.page = ${this.page}`)
     }
   }
 }

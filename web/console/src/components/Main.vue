@@ -4,17 +4,22 @@
       <el-tab-pane label="Login" name="login">
         <Login />
       </el-tab-pane>
+      <el-tab-pane label="Page" name="page">
+        <MangaView />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import Login from './Login.vue'
+import Login from './Login'
+import MangaView from './MangaView'
 
 export default {
   name: 'main',
   components: {
-    Login
+    Login,
+    MangaView,
   },
   data () {
     return {

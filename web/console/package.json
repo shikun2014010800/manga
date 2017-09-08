@@ -12,6 +12,7 @@
     "test": "standard"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "binarysearch": "^1.0.0",
     "capitalize": "^1.0.0",
     "date-difference": "^1.0.0",
@@ -53,4 +54,3 @@
     "webpack-dev-server": "^2.5.1"
   }
 }
-

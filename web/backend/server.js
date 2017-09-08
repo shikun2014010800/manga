@@ -11,6 +11,7 @@ const Boom = require('boom')
 const HapiAsyncHandler = require('hapi-async-handler')
 const Promise = require('bluebird')
 const readFile = Promise.promisify(fs.readFile)
+const Basic = require('hapi-auth-basic')
 
 server.connection({ port: 3000, host: 'localhost' })
 const SwaggerOptions = {
@@ -18,6 +19,26 @@ const SwaggerOptions = {
     'title': 'Test API Documentation',
     'version': '0.0.1'
   }
+}
+
+const users = {
+  john: {
+      username: 'admin',
+      password: 'Admin753#',   // 'secret'
+      name: 'John Doe',
+      id: '2133d32a'
+  }
+}
+
+const validate = function (request, username, password, callback) {
+  const user = users[username]
+  if (!user) {
+    return callback(null, false)
+  }
+
+  Bcrypt.compare(password, user.password, (err, isValid) => {
+    callback(err, isValid, { id: user.id, name: user.name })
+  });
 }
 
 server.register(Inert, () => {})
@@ -29,8 +50,28 @@ server.register({
 server.register({
   register: require('hapi-cors'),
   options: {
-    origins: ['http://localhost:8080', 'http://localhost:8081']
+    origins: ['http://localhost:8080']
   }
+})
+
+// api/v1/login
+server.register(Basic, (err) => {
+  if (err) { throw err }
+  server.auth.strategy('simple', 'basic', { validateFunc: validate })
+  server.route({
+    method: 'GET',
+    path: '/api/v1/login',
+    config: {
+      auth: 'simple',
+      handler: function (request, reply) {
+        'use strict'
+        reply({
+          user: request.auth.credentials.name,
+          login: true
+        }).code(200)
+      }
+    }
+  })
 })
 
 server.route({
@@ -73,9 +114,10 @@ server.route({
   }
 })
 
+// api/v1/texts/guwenyuan/{id}
 server.route({
   method: 'GET',
-  path: '/texts/guwenyuan/{id}',
+  path: '/api/v1/texts/guwenyuan/{id}',
   handler: async function (req, reply) {
     const mangaId = parseInt(req.params.id)
     console.log('manga id = ' + mangaId)
@@ -87,9 +129,11 @@ server.route({
     }
   }
 })
+
+// api/v1/pictures/guwenyuan/{id}
 server.route({
   method: 'GET',
-  path: '/pictures/guwenyuan/{id}',
+  path: '/api/v1/pictures/guwenyuan/{id}',
   handler: function (req, reply) {
     const mangaId = parseInt(req.params.id)
     if (mangaId >= 0 && mangaId <= 9) {
